@@ -9,21 +9,25 @@ function App() {
 
   useEffect(() => {
     const canvas = document.getElementById("drawing-area");
+    const context = canvas.getContext("2d")
+
     canvas.width = window.innerWidth / 2
     canvas.height = canvas.width / 2
 
-    const context = canvas.getContext("2d")
     context.scale(1, 1)
     context.lineCap = 'round'
     context.strokeStyle = 'black'
-    context.lineWidth = 5
+    context.lineWidth = 4
     contextRef.current = context
   }, [])
 
   const startDrawing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
+
+    contextRef.current.clearRect(0, 0, contextRef.current.canvas.width, contextRef.current.canvas.height);
     contextRef.current.beginPath()
     contextRef.current.moveTo(offsetX, offsetY)
+
     setIsDrawing(true)
     setPoints([{ x: offsetX, y: offsetY }])
   }
@@ -40,14 +44,15 @@ function App() {
     const { offsetX, offsetY } = nativeEvent;
     const newPoints = [...points, { x: offsetX, y: offsetY }];
     const numPointsToRemove = Math.max(0, newPoints.length - distanceLimit);
-    const updatedPoints = newPoints.slice(numPointsToRemove);
+    const updatedPoints = numPointsToRemove == 0 ? newPoints : newPoints.slice(numPointsToRemove);
 
     const current = contextRef.current
 
-    current.clearRect(0, 0, contextRef.current.canvas.width, contextRef.current.canvas.height);
+    if (numPointsToRemove > 0) {
+      current.clearRect(0, 0, contextRef.current.canvas.width, contextRef.current.canvas.height);
+    }
     current.beginPath();
     updatedPoints.reduce((prevPoint, currPoint) => {
-      current.moveTo(prevPoint.x, prevPoint.y)
       current.lineTo(currPoint.x, currPoint.y)
       return currPoint
     })
@@ -59,13 +64,6 @@ function App() {
   return (
     <div>
       <h1>Test</h1>
-      {/* <div className='canvas-container'>
-        <canvas id="drawing-area" style={{ border: "1px solid black" }}
-          onMouseDown={startDrawing}
-          onMouseUp={finishDrawing}
-          onMouseMove={draw}
-        />
-      </div> */}
       <Canvas startDrawing={startDrawing}
       finishDrawing={finishDrawing} draw={draw}/>
     </div>
