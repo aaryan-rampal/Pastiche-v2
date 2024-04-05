@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Canvas from './components/Canvas'
+import notes from './services/notes'
 
 function App() {
   const contextRef = useRef(null)
@@ -34,7 +35,9 @@ function App() {
 
   const finishDrawing = () => {
     contextRef.current.closePath()
-    console.log(points)
+    // console.log(points)
+
+    notes.getClosestMatch(points).then(response => console.log(response))
     setIsDrawing(false)
   }
 
@@ -48,9 +51,11 @@ function App() {
 
     const current = contextRef.current
 
+    // keeps the stroke contained to distanceLimit pixels
     if (numPointsToRemove > 0) {
       current.clearRect(0, 0, contextRef.current.canvas.width, contextRef.current.canvas.height);
     }
+
     current.beginPath();
     updatedPoints.reduce((prevPoint, currPoint) => {
       current.lineTo(currPoint.x, currPoint.y)
