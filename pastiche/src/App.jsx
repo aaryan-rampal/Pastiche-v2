@@ -7,18 +7,18 @@ function App() {
   const [points, setPoints] = useState([])
   const distanceLimit = 25
 
-  // useEffect(() => {
-  //   const canvas = document.getElementById("drawing-area");
-  //   canvas.width = window.innerWidth / 2
-  //   canvas.height = canvas.width / 2
+  useEffect(() => {
+    const canvas = document.getElementById("drawing-area");
+    canvas.width = window.innerWidth / 2
+    canvas.height = canvas.width / 2
 
-  //   const context = canvas.getContext("2d")
-  //   context.scale(1, 1)
-  //   context.lineCap = 'round'
-  //   context.strokeStyle = 'black'
-  //   context.lineWidth = 5
-  //   contextRef.current = context
-  // }, [])
+    const context = canvas.getContext("2d")
+    context.scale(1, 1)
+    context.lineCap = 'round'
+    context.strokeStyle = 'black'
+    context.lineWidth = 5
+    contextRef.current = context
+  }, [])
 
   const startDrawing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
@@ -67,7 +67,7 @@ function App() {
         />
       </div> */}
       <Canvas startDrawing={startDrawing}
-      finishDrawing={finishDrawing}/>
+      finishDrawing={finishDrawing} draw={draw}/>
     </div>
   )
 }
