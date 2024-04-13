@@ -41,7 +41,7 @@ def doFFT(edge):
 
     # perform fast fourier transform
     dft = np.fft.fft(cnt1[:, 0] + 1j * cnt1[:, 1])
-    descriptors = dft[:10]
+    descriptors = dft[:75]
     # faiss can't take complex numbers so convert to real numbers
     real_vectors = np.concatenate((np.real(descriptors), np.imag(descriptors)), axis=0)
     query = torch.from_numpy(real_vectors).unsqueeze(0)
