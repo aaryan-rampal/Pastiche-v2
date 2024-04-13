@@ -24,6 +24,11 @@ const baseUrl = 'http://localhost:8080/api/pastiche'
 // 	})
 // }
 
+const startServer = () => {
+	const request = axios.get(baseUrl,'/startup')
+	return request.then(response => response.data)
+}
+
 const getClosestMatch = (points) => {
 	const request = axios.post(baseUrl, {
 		headers: { 'Content-Type': 'application/json', },
@@ -35,5 +40,6 @@ const getClosestMatch = (points) => {
 }
 
 export default {
+	startServer,
 	getClosestMatch
 }

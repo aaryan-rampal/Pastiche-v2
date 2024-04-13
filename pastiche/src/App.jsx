@@ -9,6 +9,10 @@ function App() {
   const distanceLimit = 25
 
   useEffect(() => {
+    const startFAISS = notes.startServer().then(data => {
+      console.log('started server', data)
+    })
+
     const canvas = document.getElementById("drawing-area");
     const context = canvas.getContext("2d")
 
