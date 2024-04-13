@@ -8,6 +8,7 @@ CORS(app)
 def users():
 	request_data = request.json.get('data')
 	points = request_data.get('points')
+	print(a)
 	return points, 200
 
 if __name__ == '__main__':
