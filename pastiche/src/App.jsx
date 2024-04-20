@@ -6,7 +6,7 @@ function App() {
   const contextRef = useRef(null)
   const [isDrawing, setIsDrawing] = useState(false)
   const [points, setPoints] = useState([])
-  const distanceLimit = 25
+  const distanceLimit = 50
 
   useEffect(() => {
     const startFAISS = notes.startServer().then(data => {

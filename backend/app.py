@@ -24,8 +24,12 @@ def turnToNumpy(points):
     y_values = [point['y'] for point in points]
 
     points_array = np.column_stack((x_values, y_values))
-    doFFT(points_array)
+    # doFFT(points_array)
+	doSift(points_array)
     return points_array
+
+def doSift(points):
+	return None
 
 def doFFT(edge):
     points_tensor = torch.from_numpy(edge)
@@ -41,12 +45,14 @@ def doFFT(edge):
 
     # perform fast fourier transform
     dft = np.fft.fft(cnt1[:, 0] + 1j * cnt1[:, 1])
-    descriptors = dft[:75]
+    descriptors = dft[:100]
     # faiss can't take complex numbers so convert to real numbers
     real_vectors = np.concatenate((np.real(descriptors), np.imag(descriptors)), axis=0)
+    real_vectors = np.pad(real_vectors, (0, (100*2) - real_vectors.shape[0]), 'constant')
     query = torch.from_numpy(real_vectors).unsqueeze(0)
     print(query.shape)
 
+    print(query)
     D, I = index.search(query, 5)     # actual search
     print(D, I)
     if (D[0][0] > 100):
